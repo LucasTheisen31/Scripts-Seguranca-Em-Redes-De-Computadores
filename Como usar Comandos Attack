@@ -1,0 +1,111 @@
+Entrar on CORE NETWORK simulator, entrar no moodle via CORE NETWORK
+ou fazer cópia da sua máquina real para o ambiente virtual CORE, através do comando:  scp nomedousuário@192.168.56.1:~/Downloads/t50* .
+entrar na máquina virtual;
+descompactar o arquivo na pasta através do comando: tar -xvzf t50-5.4.1.tar.gz
+entrar no diretório: cd t50-5.4.1
+digitar o comando:  make -W Makefile
+
+
+﻿ssh -Y ipv6br@192.168.30.220
+
+core-gui Desktop/LAB-01-Seguranca_de_Redes_CORENETWORK.imn
+
+./Desktop/scriptAttack.sh /tmp/pycore.42808/ 192.0.2.10
+
+sudo ./Desktop/scriptAttack.sh close
+
+watch -n 1 wget 192.0.2.10
+
+#Capturar dados com tcpdump e armazenar em arquivo.
+tcpdump -i eth0 -w captura.cap
+
+#Copair arquivo do core network para o pc. Digitar comando na maquina local.
+scp ipv6br@192.168.56.102:/home/ipv6br/captura.cap .
+
+#Copiar arquivo .cap para um arquivo csv.
+tcpdump -r captura.cap > relatorio-attack-t50.csv
+
+
+======================================
+# Faz download a cada 2s durante 1min
+# para uma maquina
+
+machine='n11'
+
+xterm -e vcmd -c $1/$machine -- timeout 60s watch -n 2 wget $2 &
+
+
+========================================
+# 08/12/2022
+# Script de coleta alternada 
+# attack dos durante 1 min
+
+machine='n15'
+
+xterm -e vcmd -c $1/$machine -- timeout 60s t50 --flood --turbo -S $2 &
+
+========================================
+# 08/12/2022
+# Script de coleta alternada 
+# attack durante 1 min
+
+
+list=$(cat ~/ddos/machine)
+
+for i in $list;
+
+do
+
+        xterm -e vcmd -c $1/$i -- timeout 60s t50 --flood --turbo -S $2 &
+
+done
+
+=========================================
+
+# Faz download a cada 2s durante 1min
+# para várias maquinas
+
+list=$(cat ~/ddos/machine)
+
+for i in $list;
+
+do
+
+        xterm -e vcmd -c $1/$i -- timeout 60s watch -n 2 wget $2 &
+
+done
+
+===== Scripts de ataques e outros ========= -> scriptAttack.sh
+
+./Desktop/scriptAttack.sh /tmp/<pycore> <ip>
+
+./Desktop/scriptAttack.sh /tmp/<pycore> <ip> <nome da maquina que vai atacar>
+
+
+====== Para parar o Attack ===========
+
+sudo ./Desktop/scriptAttack.sh close
+
+
+====== Script para separar o pcap por intervalo de tempo (10s) ======== - > scriptExportarCAP10s.sh
+
+Como usar?
+
+pré-requisitos
+
+pasta ./pcap/fil
+
+chamada
+
+scriptExportarCAP10s <yyyy-mm-dd> <hora> <minInicial> <minFinal> <arquivoPcap>
+
+====== Script para Contagem de pacotes separados ========-> scriptsFilter.sh
+
+Como usar?
+
+pré-requisitos
+
+estar na mesma pasta que o ./data Ou alterar os diretórios no código
+
+chamada ./scriptsFilter
+
